@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset='utf-8' />
+	<title>Instant - JQuery Plugin</title>
+	<link rel="stylesheet" href="./instant.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="./instant.js"></script>
+
+	<script>
+	(function($, window, document) {
+	$(function(){
+		var settings = {
+			"listOptions": {
+				"1": "a",
+				"2": "B",
+				"3": "Já"
+			}
+		};
+
+		$(".i").instant(settings);
+	});
+	}(window.jQuery, window, document));
+	</script>
+</head>
+
+<body>
+<input type="text" value="" class="i" />
+</body>
+</html>
