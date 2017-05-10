@@ -1,4 +1,4 @@
-# Instant
+# Instant - JQuery Plugin
 JQuery Plugin for interactive instant search
 * Author: Maro Ortega
 * License: GPLv3
@@ -37,9 +37,13 @@ var parameters = {
 * **formName**: The name given to the hidden input that passes the value of the selected option in a form. By default it takes the name of the base `input`.
 * **listOptions**: A JSON object with the list of options the plugin will search in, in the form of `{ optionValue: optionName }`.
 
-Also it is possible to pass the listOptions parameter as the `data-options` attribute in the base `input`.
+Also it is possible to pass the listOptions parameter as the `data-options` attribute in the base `input` with the `hidden-` prefix.
 Any option clash between `data-options` attribute and `parameters.listOptions` will end up using the former's.
 ```
+// data-options = {
+//    "1": "Option 1",
+//    "2": "Option 2"
+//}
 <input
     type="text"
     class="instant"
