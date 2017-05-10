@@ -19,32 +19,45 @@
 	};
 
 	var removeAccents = function(str){
-		return str;
+		var res = str;
+		for(var c in CHARACTER_REPLACEMENTS){
+			var regex = new RegExp("[" + CHARACTER_REPLACEMENTS[c] + "]", "g");
+			res = res.replace(regex, c);
+		}
+		return res;
 	}
 
-	/** Plugin Definition  **/
+	/**
+	**	Plugin Definition
+	**/
 	$.instant = function(el, userSettings){
 		var $in = this;
 
-		/** HTML elements **/
+		/**
+		**	Plugin HTML elements
+		**/
 		$in.$el = $(el);
 		$in.$wrapper = false;
 		$in.$list = false;
 		$in.$hiddenInput = false;
 
-		/** Plugin Configuration  **/
+		/**
+		**	Plugin Configuration
+		**/
+		if($in.$el.attr("data-options")) $.extend(userSettings.listOptions, $in.$el.data("options"));
 		$in.set = $.extend({
-				"accentsInsensitive":		true, // Accent insensitive string comparison
-				"autocomplete":					false, // Allow browser autocompletion for searchInput
-				"callback":							false, // Callback function when an option is selected
-				"caseInsensitive":			true, // Case insensitive string comparison
-				"formName":							"instant", // Set name attribute for searchInput
-				"listOptions":					{}, // List of possible options where to search
-				"placeholder":					"", // Text to show in searchInput
-				"required":							false // Set HTML5 required attribute for searchInput
+				"accentsInsensitive":		true,		// Accent insensitive string comparison
+				"attributes":						false,	// List of attributes to set for $in.$el
+				"callback":							false,	// Callback function when an option is selected
+				"caseInsensitive":			true,		// Case insensitive string comparison
+				"formName":							"hidden-" + $in.$el.data("name"), // Set name attribute for searchInput
+				"listOptions":					{},			// List of possible options where to search
 			}, userSettings);
 
-		/** DOM manipulation methods **/
+		/**
+		**	DOM manipulation methods
+		**/
+		/** Wrap and add necessary elements to the DOM **/
 		$in.createDOM = function(){
 			$in.$wrapper = $("<span>").addClass("instant_wrapper");
 			$in.$list = $("<ul>").addClass("instant_list")
@@ -53,16 +66,15 @@
 				"name": $in.set.formName
 			});
 
-			var elAttr = { "placeholder": $in.set.placeholder };
-			if($in.set.autocomplete === false) elAttr.autocomplete = "off";
-			if($in.set.required === true) elAttr.required = "off";
-			$in.$el.attr(elAttr);
+			$in.$el.attr($in.set.attributes);
 
 			$in.$el.wrap($in.$wrapper);
 			$in.$el.after($in.$list, $in.$hiddenInput)
 		}
 
+		/** Fill option list **/
 		$in.generateList = function(){
+			$in.$list.empty();
 			for(var o in $in.set.listOptions){
 				var $option = $("<li>");
 				$option.attr("value", o).text($in.set.listOptions[o]);
@@ -70,6 +82,7 @@
 			}
 		}
 
+		/** Filter the option list **/
 		$in.browseList = function(name){
 			if($in.set.caseInsensitive) name = name.toLowerCase();
 			if($in.set.accentsInsensitive) name = removeAccents(name);
@@ -88,7 +101,9 @@
 			$li.filter(".visible").first().addClass("focus");
 		}
 
-		/** Init Plugin  */
+		/**
+		**	Init Plugin
+		**/
 		$in.init = function(){
 			$in.createDOM();
 			$in.generateList();
@@ -96,7 +111,9 @@
 		$in.init();
 	}
 
-	/** Plugin Events **/
+	/**
+	**	Plugin Events
+	**/
 	$.fn.instant = function(options){
 		return this.each(function(){
 			var $in = new $.instant(this, options);
@@ -131,6 +148,8 @@
 				}
 			}).on("keyup", function(e){
 				if(e.which == 13 || e.which == 38 || e.which == 40){ e.preventDefault(); return false; }
+				$in.$hiddenInput.val("");
+
 				var nameSearch = $in.$el.val();
 				$in.browseList(nameSearch);
 
@@ -143,15 +162,15 @@
 					$in.$list.hide();
 					$in.$list.find(".focus").removeClass("focus");
 				}
-			}).on("setValue", function(){
+			}).on("setValue", function(e, value){
 				$in.$list.hide();
-//@@@
-				if(typeof $in.set.callback === "function") $in.set.callback();
+				$in.$hiddenInput.val(value);
+				if(typeof $in.set.callback === "function") $in.set.callback(vale);
 			});
 
 			/** $in.$list Events **/
 			$in.$list.on("select", "li", function(){
-				$in.$el.val($(this).text()).trigger("setValue");
+				$in.$el.val($(this).text()).trigger("setValue", $(this).val());
 			}).on("mousedown", "li", function(e){
 				$(this).trigger("select");
 			}).on("mouseover", "li", function(){
