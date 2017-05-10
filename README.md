@@ -8,19 +8,19 @@ As easy as to write some characters and see the filter working in real time, it'
 
 ### Initialize
 Add the JS and CSS files to your HTML header.
-```
+```html
 <link rel="stylesheet" href="instant.css" />
 <script src="./instant.js"></script>
 ```
 And then Initialize the plugin
-```
+```javascript
 $(selector).instant(parameters);
 ```
 Where `selector` is the `<input type="text" />` in which the plugin will be initialized.
 
 ### Parameters
 The default parameters for the plugin are:
-```
+```javascript
 var parameters = {
     "accentsInsensitive": true,
     "attributes": false,
@@ -39,16 +39,18 @@ var parameters = {
 
 Also it is possible to pass the listOptions parameter as the `data-options` attribute in the base `input` with the `hidden-` prefix.
 Any option clash between `data-options` attribute and `parameters.listOptions` will end up using the former's.
-```
-// data-options = {
-//    "1": "Option 1",
-//    "2": "Option 2"
-//}
+```html
+<!--
+data-options = {
+  "1": "Option 1",
+  "2": "Option 2"
+}
+-->
 <input
     type="text"
     class="instant"
     data-options="{&quot;1&quot;:&quot;Option 1&quot;,&quot;2&quot;:&quot;Option 2&quot;}"
-  />
+/>
 ```
 Be careful with the formating or it might break your HTML, if using PHP to print that data please use `htmlentities()`.
 
