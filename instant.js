@@ -47,7 +47,7 @@
 		if($in.$el.attr("data-options")) $.extend(userSettings.listOptions, $in.$el.data("options"));
 		$in.set = $.extend({
 				"accentsInsensitive":		true,		// Accent insensitive string comparison
-				"attributes":						false,	// List of attributes to set for $in.$el
+				"attributes":						{},	// List of attributes to set for $in.$el
 				"callback":							false,	// Callback function when an option is selected
 				"caseInsensitive":			true,		// Case insensitive string comparison
 				"formName":							"hidden-" + $in.$el.data("name"), // Set name attribute for searchInput

@@ -23,7 +23,7 @@ The default parameters for the plugin are:
 ```javascript
 var parameters = {
     "accentsInsensitive": true,
-    "attributes": false,
+    "attributes": {},
     "callback": false,
     "caseInsensitive": true,
     "formName": "hidden-" + input name,
