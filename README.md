@@ -32,7 +32,7 @@ var parameters = {
 ```
 * **accentsInsensitive**: To allow match accentuated characters with non-accentuated characters p.ex. `á => a`.
 * **attributes**: A JSON list of attributes to add to the `input` in the form of `{ attributeName: attributeValue }`.
-* **callback**: A callback function that executes when an option is selected, it passes the value as a parameter to the function.
+* **callback**: A callback function that executes when an option is selected, it passes the value and the name of the option as a parameter to the function.
 * **caseInsensitive**: To allow match upper case characters with lower case characters.
 * **formName**: The name given to the hidden input that passes the value of the selected option in a form. By default it takes the name of the base `input`.
 * **listOptions**: A JSON object with the list of options the plugin will search in, in the form of `{ optionValue: optionName }`.

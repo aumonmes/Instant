@@ -162,15 +162,15 @@
 					$in.$list.hide();
 					$in.$list.find(".focus").removeClass("focus");
 				}
-			}).on("setValue", function(e, value){
+			}).on("setValue", function(e, value, name){
 				$in.$list.hide();
 				$in.$hiddenInput.val(value);
-				if(typeof $in.set.callback === "function") $in.set.callback(value);
+				if(typeof $in.set.callback === "function") $in.set.callback(value, name);
 			});
 
 			/** $in.$list Events **/
 			$in.$list.on("select", "li", function(){
-				$in.$el.val($(this).text()).trigger("setValue", $(this).val());
+				$in.$el.val($(this).text()).trigger("setValue", $(this).val(), $(this).tex());
 			}).on("mousedown", "li", function(e){
 				$(this).trigger("select");
 			}).on("mouseover", "li", function(){
