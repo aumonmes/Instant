@@ -165,7 +165,7 @@
 			}).on("setValue", function(e, value){
 				$in.$list.hide();
 				$in.$hiddenInput.val(value);
-				if(typeof $in.set.callback === "function") $in.set.callback(vale);
+				if(typeof $in.set.callback === "function") $in.set.callback(value);
 			});
 
 			/** $in.$list Events **/
