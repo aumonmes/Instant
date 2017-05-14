@@ -44,15 +44,19 @@
 		/**
 		**	Plugin Configuration
 		**/
-		if($in.$el.attr("data-options")) $.extend(userSettings.listOptions, $in.$el.data("options"));
 		$in.set = $.extend({
 				"accentsInsensitive":		true,		// Accent insensitive string comparison
 				"attributes":						{},	// List of attributes to set for $in.$el
 				"callback":							false,	// Callback function when an option is selected
 				"caseInsensitive":			true,		// Case insensitive string comparison
-				"formName":							"hidden-" + $in.$el.data("name"), // Set name attribute for searchInput
+				"formName":							"hidden-" + $in.$el.attr("name"), // Set name attribute for searchInput
+				"defaultValue":					false,	// Default value for $in.$hiddenInput
 				"listOptions":					{},			// List of possible options where to search
+				"prepare":							false		// Function to call before creating the instant
 			}, userSettings);
+		/** Use data- attributes to get settings **/
+		if($in.$el.attr("data-options")) $.extend($in.set.listOptions, $in.$el.data("options"));
+		if($in.$el.attr("data-value")) $in.set.defaultValue = $in.$el.data("value");
 
 		/**
 		**	DOM manipulation methods
@@ -62,8 +66,9 @@
 			$in.$wrapper = $("<span>").addClass("instant_wrapper");
 			$in.$list = $("<ul>").addClass("instant_list")
 			$in.$hiddenInput = $("<input>").attr({
+				"name": $in.set.formName,
 				"type": "hidden",
-				"name": $in.set.formName
+				"value": $in.set.defaultValue
 			});
 
 			$in.$el.attr($in.set.attributes);
@@ -105,6 +110,7 @@
 		**	Init Plugin
 		**/
 		$in.init = function(){
+			if(typeof $in.set.prepare === "function") $in.set.prepare($in);
 			$in.createDOM();
 			$in.generateList();
 		}
@@ -165,12 +171,12 @@
 			}).on("setValue", function(e, value, name){
 				$in.$list.hide();
 				$in.$hiddenInput.val(value);
-				if(typeof $in.set.callback === "function") $in.set.callback(value, name);
+				if(typeof $in.set.callback === "function") $in.set.callback($in, value, name);
 			});
 
 			/** $in.$list Events **/
 			$in.$list.on("select", "li", function(){
-				$in.$el.val($(this).text()).trigger("setValue", $(this).val(), $(this).tex());
+				$in.$el.val($(this).text()).trigger("setValue", $(this).val(), $(this).text());
 			}).on("mousedown", "li", function(e){
 				$(this).trigger("select");
 			}).on("mouseover", "li", function(){
