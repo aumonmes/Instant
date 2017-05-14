@@ -26,18 +26,22 @@ var parameters = {
     "attributes": {},
     "callback": false,
     "caseInsensitive": true,
+    "defaultValue": false,
     "formName": "hidden-" + input name,
-    "listOptions": {}
+    "listOptions": {},
+    "prepare": false
 };
 ```
 * **accentsInsensitive**: To allow match accentuated characters with non-accentuated characters p.ex. `á => a`.
 * **attributes**: A JSON list of attributes to add to the `input` in the form of `{ attributeName: attributeValue }`.
-* **callback**: A callback function that executes when an option is selected, it passes the value and the name of the option as parameters to the function.
+* **callback**: A callback function that executes when an option is selected, it passes the plugin itself, the value and the name of the selected option as parameters to the function.
 * **caseInsensitive**: To allow match upper case characters with lower case characters.
+* **defaultValue**: Default value to set to the hidden input.
 * **formName**: The name given to the hidden input that passes the value of the selected option in a form. By default it takes the name of the base `input`.
 * **listOptions**: A JSON object with the list of options the plugin will search in, in the form of `{ optionValue: optionName }`.
+* **prepare**: A function to execute at first when the plugin initialized, it's argument is the plugin itself.
 
-Also it is possible to pass the listOptions parameter as the `data-options` attribute in the base `input` with the `hidden-` prefix.
+Also it is possible to pass the `listOptions` parameter as the `data-options` attribute in the base `input` with the `hidden-` prefix.
 Any option clash between `data-options` attribute and `parameters.listOptions` will end up using the former's.
 ```html
 <!--
@@ -53,6 +57,15 @@ data-options = {
 />
 ```
 Be careful with the formating or it might break your HTML, if using PHP to print that data please use `htmlentities()`.
+
+The same goes for a default value for the hidden input using `data-value`, any clash between `data-value` and `parameters.defaultValue` will end up using the former.
+```html
+<input
+    type="text"
+    class="instant"
+    data-value="defaultValue"
+/>
+```
 
 ## CSS
 A very basic style is provided for a simple use. It only affects three elements.
